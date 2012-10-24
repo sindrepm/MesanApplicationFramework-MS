@@ -1,115 +1,54 @@
 using System;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using MesanMobilityFramework.Common.Interfaces;
-using Newtonsoft.Json;
 
 namespace MesanMobilityFramework.Common.Communication
 {
     public class RestClient
     {
-        private IRestResponseConverter _converter;
-
         public string BaseAddress { get; private set; }
         public ICredentials Credentials { get; set; }
-        public IRestResponseConverter Converter
-        {
-            get
-            {
-                if (_converter == null)
-                    _converter = new DefaultJsonSerializer();
-
-                return _converter;
-            }
-            set { _converter = value; }
-        }
+        public IRestResponseConverter ResponseConverter { get; set; }
+        public TimeSpan ConnectionTimeout { get; set; }
 
         public RestClient()
         {
+            ConnectionTimeout = TimeSpan.FromSeconds(15);
+            ResponseConverter = new DefaultJsonRestResponseConverter();
         }
 
-        public RestClient(string baseAddress)
+        public RestClient(string baseAddress) : this()
         {
             BaseAddress = baseAddress;
         }
 
-        public async Task<RestResponse<T>> ExecuteAsync<T>(RestCommand<T> command)
+        public async Task<RestResponse<T>> ExecuteAsync<T>(RestCommand<T> command) where T : class,new()
         {
-            var jsonPayload = JsonConvert.SerializeObject(command.Object);
+            var data = command.Data != null ? ResponseConverter.SerializeObject(command.Data) : string.Empty;
 
-            using (var handler = new HttpClientHandler())
+            var executionContext = new RestExecutionContext(this);
+
+            var response = await executionContext.GetResponseAsync(command, data);
+
+            response.EnsureSuccessStatusCode();
+            var result = await response.Content.ReadAsStringAsync();
+
+            return new RestResponse<T>
             {
-                handler.Credentials = Credentials;
-                using (var httpClient = new HttpClient(handler))
-                {
-                    ConfigureHttpClient(httpClient);
-
-                    HttpResponseMessage response;
-                    switch (command.HttpMethod)
-                    {
-                        case HttpMethod.Get:
-                            response = await httpClient.GetAsync(command.ResourceUri);
-                            return await DeserializeResponseAsync<T>(await GetResponseAsStringAsync(response));
-
-                        case HttpMethod.Put:
-                            response = await httpClient.PutAsync(command.ResourceUri, new StringContent(jsonPayload));
-                            return await DeserializeResponseAsync<T>(await GetResponseAsStringAsync(response));
-
-                        case HttpMethod.Post:
-                            response = await httpClient.PostAsync(command.ResourceUri, new StringContent(jsonPayload));
-                            return await DeserializeResponseAsync<T>(await GetResponseAsStringAsync(response));
-                        case HttpMethod.Delete:
-                            response = await httpClient.DeleteAsync(command.ResourceUri);
-                            return await DeserializeResponseAsync<T>(await GetResponseAsStringAsync(response));
-                    }
-
-                    throw new Exception(string.Format("Rest command '{0}' is not valid for an executable task. (Type: {1})", command, command.GetType().FullName));
-                }
-            }
+                Content = result,
+                Data = await ResponseConverter.DeserializeObjectAsync<T>(result)
+            };
         }
 
         public async Task<RestResponse> ExecuteAsync(RestCommand command)
         {
-            using (var handler = new HttpClientHandler())
-            {
-                using (var httpClient = new HttpClient(handler))
-                {
-                    ConfigureHttpClient(httpClient);
+            var executionContext = new RestExecutionContext(this);
+            var response = await executionContext.GetResponseAsync(command);
 
-                    switch (command.HttpMethod)
-                    {
-                        case HttpMethod.Delete:
-                            var response = await httpClient.DeleteAsync(command.ResourceUri);
-                            return new RestResponse { Content = await GetResponseAsStringAsync(response) };
-                    }
-
-                    throw new Exception(string.Format("Rest command '{0}' is not valid for an executable task. (Type: {1})", command, command.GetType().FullName));
-                }
-            }
-        }
-
-        private void ConfigureHttpClient(HttpClient httpClient)
-        {
-            if (!string.IsNullOrEmpty(BaseAddress))
-                httpClient.BaseAddress = new Uri(BaseAddress);
-
-            httpClient.Timeout = TimeSpan.FromMilliseconds(3000);
-        }
-
-        private static async Task<string> GetResponseAsStringAsync(HttpResponseMessage response)
-        {
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync();
-        }
-
-        private static async Task<RestResponse<T>> DeserializeResponseAsync<T>(string content)
-        {
-            return new RestResponse<T>
-            {
-                Content = content,
-                Data = await JsonConvert.DeserializeObjectAsync<T>(content)
-            };
+            var result = await response.Content.ReadAsStringAsync();
+            return new RestResponse { Content = result };
         }
     }
 }

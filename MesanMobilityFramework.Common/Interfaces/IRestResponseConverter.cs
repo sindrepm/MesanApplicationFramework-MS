@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace MesanMobilityFramework.Common.Interfaces
 {
+    
     public interface IRestResponseConverter
     {
         string SerializeObject(object value);
-        T DeserializeObject<T>(string value);
+        T DeserializeObject<T>(string value) where T : class,new();
         Task<string> SerializeObjectAsync(object value);
-        Task<T> DeserializeObjectAsync<T>(string value);
+        Task<T> DeserializeObjectAsync<T>(string value) where T : class,new();
     }
 }

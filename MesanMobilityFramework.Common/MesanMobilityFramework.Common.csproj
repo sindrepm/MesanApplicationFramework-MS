@@ -99,13 +99,23 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Communication\HttpMethod.cs" />
     <Compile Include="Communication\RestClient.cs" />
     <Compile Include="Communication\RestCommand.cs" />
+    <Compile Include="Communication\RestExecutionContext.cs" />
+    <Compile Include="Communication\RestResponse.cs" />
+    <Compile Include="DefaultJsonRestResponseConverter.cs" />
+    <Compile Include="DefaultXmlRestResponseConverter.cs" />
+    <Compile Include="Interfaces\IRestResponseConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.10\lib\winrt45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>

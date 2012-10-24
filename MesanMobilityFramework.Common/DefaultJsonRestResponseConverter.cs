@@ -2,16 +2,16 @@
 using MesanMobilityFramework.Common.Interfaces;
 using Newtonsoft.Json;
 
-namespace MesanMobilityFramework.Common.Communication
+namespace MesanMobilityFramework.Common
 {
-    public class DefaultJsonSerializer : IRestResponseConverter
+    public class DefaultJsonRestResponseConverter : IRestResponseConverter
     {
         public string SerializeObject(object value)
         {
             return JsonConvert.SerializeObject(value);
         }
 
-        public T DeserializeObject<T>(string value)
+        public T DeserializeObject<T>(string value) where T : class, new()
         {
             return JsonConvert.DeserializeObject<T>(value);
         }
@@ -21,7 +21,7 @@ namespace MesanMobilityFramework.Common.Communication
             return await JsonConvert.SerializeObjectAsync(value);
         }
 
-        public async Task<T> DeserializeObjectAsync<T>(string value)
+        public async Task<T> DeserializeObjectAsync<T>(string value) where T : class, new()
         {
             return await JsonConvert.DeserializeObjectAsync<T>(value);
         }
