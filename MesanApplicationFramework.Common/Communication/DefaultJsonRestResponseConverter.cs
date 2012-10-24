@@ -2,7 +2,7 @@
 using MesanMobilityFramework.Common.Interfaces;
 using Newtonsoft.Json;
 
-namespace MesanMobilityFramework.Common.Communication
+namespace MesanApplicationFramework.Common.Communication
 {
     public class DefaultJsonRestResponseConverter : IRestResponseConverter
     {

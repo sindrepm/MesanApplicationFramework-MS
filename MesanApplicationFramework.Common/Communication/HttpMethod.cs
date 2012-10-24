@@ -1,4 +1,4 @@
-﻿namespace MesanMobilityFramework.Common.Communication
+﻿namespace MesanApplicationFramework.Common.Communication
 {
     public enum HttpMethod
     {

@@ -1,9 +1,10 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using MesanMobilityFramework.Common.Communication;
 using MesanMobilityFramework.Common.Interfaces;
 
-namespace MesanMobilityFramework.Common.Communication
+namespace MesanApplicationFramework.Common.Communication
 {
     public class RestClient
     {

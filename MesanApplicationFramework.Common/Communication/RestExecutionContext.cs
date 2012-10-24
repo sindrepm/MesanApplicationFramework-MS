@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace MesanMobilityFramework.Common.Communication
+namespace MesanApplicationFramework.Common.Communication
 {
     public class RestExecutionContext
     {

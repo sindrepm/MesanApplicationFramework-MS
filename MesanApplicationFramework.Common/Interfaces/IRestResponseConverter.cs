@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace MesanMobilityFramework.Common.Interfaces
+namespace MesanApplicationFramework.Common.Interfaces
 {
     
     public interface IRestResponseConverter

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace MesanMobilityFramework.Common.Communication
+namespace MesanApplicationFramework.Common.Communication
 {
     public class RestCommand
     {

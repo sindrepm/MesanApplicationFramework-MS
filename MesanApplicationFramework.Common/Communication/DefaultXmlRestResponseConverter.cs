@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using MesanMobilityFramework.Common.Interfaces;
 
-namespace MesanMobilityFramework.Common.Communication
+namespace MesanApplicationFramework.Common.Communication
 {
     public class DefaultXmlRestResponseConverter : IRestResponseConverter
     {
