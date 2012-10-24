@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using MesanMobilityFramework.Common.Interfaces;
+using MesanApplicationFramework.Common.Interfaces;
 using Newtonsoft.Json;
 
 namespace MesanApplicationFramework.Common.Communication

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using MesanMobilityFramework.Common.Interfaces;
+using MesanApplicationFramework.Common.Interfaces;
 
 namespace MesanApplicationFramework.Common.Communication
 {
