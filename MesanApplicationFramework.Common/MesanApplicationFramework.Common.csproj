@@ -9,8 +9,8 @@
     <ProjectGuid>{C52B3015-0B85-4EF9-B62B-3F73B0F2B525}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MesanMobilityFramework.Common</RootNamespace>
-    <AssemblyName>MesanMobilityFramework.Common</AssemblyName>
+    <RootNamespace>MesanApplicationFramework.Common</RootNamespace>
+    <AssemblyName>MesanApplicationFramework.Common</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -104,8 +104,8 @@
     <Compile Include="Communication\RestCommand.cs" />
     <Compile Include="Communication\RestExecutionContext.cs" />
     <Compile Include="Communication\RestResponse.cs" />
-    <Compile Include="DefaultJsonRestResponseConverter.cs" />
-    <Compile Include="DefaultXmlRestResponseConverter.cs" />
+    <Compile Include="Communication\DefaultJsonRestResponseConverter.cs" />
+    <Compile Include="Communication\DefaultXmlRestResponseConverter.cs" />
     <Compile Include="Interfaces\IRestResponseConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
